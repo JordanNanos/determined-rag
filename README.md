@@ -1,9 +1,9 @@
-## A collection of RAG demos using Determined AI and TitanML's takeoff server
+## A collection of RAG demos using Determined AI
 
 * `fsi` includes articles scraped from the web
-* `telco` includes pdf files from user manuals
-* `federal` includes a single pdf
+* `telco` includes .md files from a github repo
 
 In the future:
+* `federal` includes pdf's
 * `retail` is in development
 * `coding` is done but served separately
