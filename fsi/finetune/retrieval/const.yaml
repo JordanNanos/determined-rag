@@ -1,0 +1,43 @@
+name: sgpt 5.8b gpt-neo
+workspace: liam
+project: db-embedding
+debug: false
+environment:
+  environment_variables:
+    - NCCL_DEBUG=INFO
+    # You may need to modify this to match your network configuration.
+    - NCCL_SOCKET_IFNAME=ens,eth,ib
+    - HF_DATASETS_CACHE=/cstor/liam/hf_cache
+    - TRANSFORMERS_CACHE=/cstor/liam/hf_cache
+    - HF_MODULES_CACHE=/cstor/liam/hf_cache
+    - HUGGINGFACE_HUB_CACHE=/cstor/liam/hf_cache
+    - SENTENCE_TRANSFORMER_HOME=/cstor/liam/hf_cache
+bind_mounts:
+  - host_path: /tmp
+    container_path: /tmp
+resources:
+  slots_per_trial: 8
+  shm_size: 200000000000
+searcher:
+  name: single
+  max_length:
+    batches: 100
+  metric: eval_loss
+entrypoint: >-
+  python -m determined.launch.torch_distributed
+  python train_no_scores.py 
+  --use_pre_trained_model
+  --model_name Muennighoff/SGPT-5.8B-weightedmean-msmarco-specb-bitfit 
+  --train_batch_size 64
+  --eval_batch_size 16 
+  --specb 
+  --lr 4e-4 
+  --freezenonbias
+  --unfreezewte
+  --pooling weightedmean 
+  --gradcache 
+  --chunksize 1 
+  --warmup_steps 10
+  --data_dir /cstor/liam/deutsche/data/qpa/parsed
+  --chunk_dir /cstor/liam/deutsche/data/scraped-csv
+max_restarts: 0

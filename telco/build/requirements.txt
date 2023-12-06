@@ -1,0 +1,16 @@
+llama-index==0.9.12
+torch==2.1
+transformers==4.35.2
+accelerate==0.25.0
+bitsandbytes==0.41.2.post2
+scipy
+
+accelerate
+chromadb
+einops
+langchain
+sentence-transformers
+streamlit
+streamlit-datalist
+transformers
+xformers

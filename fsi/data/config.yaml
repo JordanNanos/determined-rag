@@ -1,0 +1,20 @@
+resources:
+  #resource_pool: champollion
+  slots: 1
+
+bind_mounts:
+  - container_path: /root/.hfcache
+    host_path: /root/.hfcache
+    propagation: rprivate
+    read_only: false
+  - container_path: /root/dt-rag
+    host_path: /root/dt-rag
+    propagation: rprivate
+    read_only: false
+
+environment:
+  environment_variables:
+    - TRANSFORMERS_CACHE=/root/.hfcache
+    - HF_MODULES_CACHE=/root/.hfcache
+  image:
+    cuda: jnanos/rag-app:0.1

@@ -1,0 +1,9 @@
+accelerate
+chromadb
+einops
+langchain
+sentence-transformers
+streamlit
+streamlit-datalist
+transformers
+xformers

@@ -1,0 +1,6 @@
+What are the main components of Determined?
+What can you use the CLI to do?
+How do you install Determined on Kubernetes?
+Why would a Determined user choose a notebook vs an experiment?
+Why would a Determined user choose an experiment over a notebook?
+Compare the use of notebooks and experiments.

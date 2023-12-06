@@ -1,0 +1,7 @@
+accelerate
+datasets
+einops
+evaluate
+setuptools==59.5.0
+scikit-learn
+transformers

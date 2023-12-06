@@ -1,0 +1,1 @@
+det command run --config-file config-weaviate.yaml --context . "pip install streamlit-datalist weaviate-client && mkdir -p .streamlit && cp secrets.toml .streamlit/secrets.toml && streamlit run qa_weaviate.py --server.port 443"

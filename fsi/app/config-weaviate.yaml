@@ -1,0 +1,35 @@
+bind_mounts:
+  - container_path: /root/.hfcache
+    host_path: /root/.hfcache
+    propagation: rprivate
+    read_only: false
+  - container_path: /root/dt-rag
+    host_path: /root/dt-rag
+    propagation: rprivate
+    read_only: false
+
+
+resources:
+#  resource_pool: champollion
+  slots: 2
+environment:
+  environment_variables:
+    - EMBEDDING_FINE_TUNED_INDEX_DIR=/root/dt-rag/fsi/data/output/sgpt-5.8b-finetuned-retrieval-v5
+    - EMBEDDING_FINE_TUNED_MODEL_NAME=/root/.hfcache/SGPT-5.8B-finetuned-v2
+    - EMBEDDING_FINE_TUNED_TOKENIZER_NAME=/root/.hfcache/SGPT-5.8B-finetuned-v2
+    - EMBEDDING_FINE_TUNED_TOKENIZE_LOGIC=sgpt
+    - WEAVIATE_PORT=6682
+    - EXAMPLE_INPUT_QUESTIONS_FILE_NAME=/root/dt-rag/fsi/app/example_questions.txt
+    #- CHAT_MODEL_NAME=OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5
+    #- CHAT_TOKENIZER_NAME=OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5
+    - CHAT_MODEL_NAME=NousResearch/Llama-2-7b-chat-hf
+    - CHAT_TOKENIZER_NAME=NousResearch/Llama-2-7b-chat-hf
+
+    - TRANSFORMERS_CACHE=/root/.hfcache
+    - HF_MODULES_CACHE=/root/.hfcache
+  proxy_ports:
+    - proxy_port: 443
+      proxy_tcp: true
+  image:
+    cuda: jnanos/rag-app:0.1
+    #cuda: anoophpe/app-qa:3.0

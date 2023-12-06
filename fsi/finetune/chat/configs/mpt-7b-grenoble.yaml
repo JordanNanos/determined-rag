@@ -1,0 +1,55 @@
+name: mpt-7b finetune
+debug: false
+workspace: coreystaten
+project: deutsche
+environment:
+    environment_variables:
+        - NCCL_DEBUG=INFO
+        - NCCL_SOCKET_IFNAME=ens,eth,ib
+        - HF_DATASETS_CACHE=/cstor/coreystaten/hf
+        - TRANSFORMERS_CACHE=/cstor/coreystaten/hf
+        - HF_MODULES_CACHE=/cstor/coreystaten/hf
+    image:
+      cuda: determinedai/environments:cuda-11.3-pytorch-1.10-deepspeed-0.8.3-gpu-0.22.1
+resources:
+  slots_per_trial: 8
+  resource_pool: champollion
+searcher:
+  name: single
+  max_length:
+    batches: 5000
+  metric: eval_loss
+hyperparameters:
+  training_arguments:
+    learning_rate: 1e-6
+entrypoint: >-
+  python -m determined.launch.deepspeed
+  python hfllm/train_causal_llm.py 
+  --cache_dir /cstor/coreystaten/hf
+  --dataset_name csv
+  --data_files "/cstor/coreystaten/deutsche/data/scraped-csv/train_documents_fulltext_only.csv"
+  --model_name_or_path mosaicml/mpt-7b
+  --torch_dtype=bfloat16
+  --tokenizer_name mosaicml/mpt-7b
+  --bf16
+  --block_size 2048
+  --low_cpu_mem_usage
+  --output_dir ./outputs/  
+  --remove_unused_columns False 
+  --do_train  
+  --do_eval 
+  --max_steps 5000
+  --per_device_train_batch_size 1
+  --per_device_eval_batch_size 1
+  --logging_strategy steps 
+  --logging_steps 10 
+  --evaluation_strategy steps
+  --eval_steps 100
+  --save_total_limit 3 
+  --seed 133
+  --save_strategy steps
+  --save_steps 100
+  --trust_remote_code
+  --validation_split_percentage 10
+  --deepspeed ds_configs/zero_stage_2.json
+max_restarts: 0
